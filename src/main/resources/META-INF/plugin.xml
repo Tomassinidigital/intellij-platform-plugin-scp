@@ -1,15 +1,38 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>org.jetbrains.plugins.template</id>
-    <name>IntelliJ Platform Plugin Template</name>
-    <vendor>JetBrains</vendor>
+    <id>com.scpsync.plugin</id>
+    <name>SCP File Synchronizer</name>
+    <vendor>SCP Sync Plugin</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <resource-bundle>messages.ScpSyncBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="org.jetbrains.plugins.template.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="org.jetbrains.plugins.template.startup.MyProjectActivity" />
+        <!-- Configuration -->
+        <applicationConfigurable 
+            parentId="tools" 
+            instance="com.scpsync.plugin.ui.ScpSyncConfigurable"
+            id="com.scpsync.plugin.ui.ScpSyncConfigurable"
+            displayName="SCP File Synchronizer"/>
+        
+        <!-- Tool Window -->
+        <toolWindow 
+            factoryClass="com.scpsync.plugin.ui.ScpSyncLogWindow" 
+            id="SCP Sync Log"
+            anchor="bottom"
+            icon="/icons/scp-sync.png"/>
     </extensions>
+
+    <actions>
+        <!-- Context Menu Action -->
+        <action id="com.scpsync.plugin.actions.SyncFileAction" 
+                class="com.scpsync.plugin.actions.SyncFileAction" 
+                text="Sincronizza in remoto"
+                description="Synchronize file to remote server via SCP"
+                icon="/icons/scp-sync.png">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="CopyPaths"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CopyReference"/>
+        </action>
+    </actions>
 </idea-plugin>
